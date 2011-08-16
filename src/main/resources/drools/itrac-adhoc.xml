@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+             xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_tradeItem" structureRef="com.db.itrac.domain.trade.TpmlTrade" />
+  
+  <signal id="TRADE" name="trade" structureRef="com.db.itrac.domain.trade.TpmlTrade" />
+
+  <process processType="Private" isExecutable="true" id="itac.trade.main" name="adHoc" tns:packageName="com.db.itrac" >
+
+    <!-- process variables -->
+    <property id="trade" itemSubjectRef="_tradeItem"/>
+
+    <!-- nodes -->
+    <endEvent id="_3" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <startEvent id="_5" name="Start" >
+      <dataOutput id="_5_Output" />
+      <dataOutputAssociation>
+        <sourceRef>_5_Output</sourceRef>
+        <targetRef>trade</targetRef>
+      </dataOutputAssociation>
+      <outputSet>
+        <dataOutputRefs>_5_Output</dataOutputRefs>
+      </outputSet>
+      <signalEventDefinition signalRef="TRADE" />
+    </startEvent>
+    <exclusiveGateway id="_6" name="Initial" gatewayDirection="Converging" />
+    <callActivity id="_7" name="Trade Rules" calledElement="trade.rules" >
+      <ioSpecification>
+        <dataInput id="_7_tradeInput" name="trade" />
+        <dataOutput id="_7_tradeOutput" name="trade" />
+        <inputSet>
+          <dataInputRefs>_7_tradeInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_7_tradeOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>trade</sourceRef>
+        <targetRef>_7_tradeInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_7_tradeOutput</sourceRef>
+        <targetRef>trade</targetRef>
+      </dataOutputAssociation>
+    </callActivity>
+    <exclusiveGateway id="_8" name="Decide" gatewayDirection="Diverging" />
+
+    <!-- connections -->
+    <sequenceFlow id="_8-_3" sourceRef="_8" targetRef="_3" name="SEND TO BACK OFFICE" >
+      <conditionExpression xs:type="tFormalExpression" >
+				import com.db.itrac.domain.ItracStatus; trade.itracStatus ==
+				ItracStatus.SENT_TO_BOOKING_SYSTEM;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6" />
+    <sequenceFlow id="_8-_6" sourceRef="_8" targetRef="_6" name="HANDLE TRADE" >
+      <conditionExpression xs:type="tFormalExpression" language="http://www.jboss.org/drools/rule" >eval(true)
+			</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_7-_8" sourceRef="_7" targetRef="_8" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="itac.trade.main" >
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="391" y="284" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="32" y="211" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="110" y="210" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="250" y="212" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="390" y="212" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_8-_3" >
+        <di:waypoint x="414" y="236" />
+        <di:waypoint x="415" y="308" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_6" >
+        <di:waypoint x="56" y="235" />
+        <di:waypoint x="134" y="234" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_6" >
+        <di:waypoint x="414" y="236" />
+        <di:waypoint x="415" y="143" />
+        <di:waypoint x="134" y="142" />
+        <di:waypoint x="134" y="234" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="134" y="234" />
+        <di:waypoint x="305" y="236" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_8" >
+        <di:waypoint x="305" y="236" />
+        <di:waypoint x="414" y="236" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

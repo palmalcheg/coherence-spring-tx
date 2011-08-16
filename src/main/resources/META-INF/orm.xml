@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+	version="2.0">
+	<persistence-unit-metadata>
+		<persistence-unit-defaults>
+			<schema>ITRAC</schema>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<named-query name="ProcessInstancesWaitingForEvent">
+		<query>select processInstanceInfo.processInstanceId from ProcessInstanceInfo processInstanceInfo where :type member of processInstanceInfo.eventTypes</query>
+	</named-query>
+	<entity class="org.drools.persistence.processinstance.WorkItemInfo"
+		cacheable="true">
+		<table-generator name="Work_Item_SEQ" table="DROOLS_SEQUENCES" />
+		<attributes>
+			<id name="workItemId">
+				<generated-value strategy="TABLE" generator="Work_Item_SEQ" />
+			</id>
+			<basic name="creationDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+		</attributes>
+	</entity>
+	<entity class="org.drools.persistence.session.SessionInfo"
+		cacheable="true">
+		<table-generator name="Session_Info_SEQ" table="DROOLS_SEQUENCES" />
+		<attributes>
+			<id name="id">
+				<generated-value strategy="TABLE" generator="Session_Info_SEQ" />
+			</id>
+			<basic name="startDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="lastModificationDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+		</attributes>
+	</entity>
+	<entity class="org.drools.persistence.processinstance.ProcessInstanceInfo"
+		cacheable="true">
+		<table name="PROCESSINSTANCEINFO" />
+		<table-generator name="Process_SEQ" table="DROOLS_SEQUENCES" />
+		<pre-persist method-name="update" />
+		<pre-update method-name="update" />
+		<attributes>
+			<id name="processInstanceId">
+				<generated-value strategy="TABLE" generator="Process_SEQ" />
+			</id>
+			<basic name="processInstanceByteArray" fetch="LAZY">
+				<column nullable="false" />
+				<lob />
+			</basic>
+			<basic name="startDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="lastModificationDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="lastReadDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<element-collection name="eventTypes">
+				<collection-table name="EVENT_TYPES">
+					<join-column name="INSTANCE_ID" />
+				</collection-table>
+			</element-collection>
+		</attributes>
+	</entity>
+
+	<entity
+		class="org.drools.persistence.processinstance.variabletypes.VariableInstanceInfo"
+		cacheable="true">
+		<table name="VARIABLE_INSTANCE_INFO" />
+		<inheritance strategy="SINGLE_TABLE" />
+		<discriminator-value>GEN</discriminator-value>
+		<discriminator-column name="TYPE"
+			discriminator-type="STRING" length="50" />
+		<table-generator name="Variables_SEQ" table="DROOLS_SEQUENCES" />
+		<attributes>
+			<id name="id">
+				<generated-value strategy="TABLE" generator="Variables_SEQ" />
+			</id>
+		</attributes>
+	</entity>
+	
+	<entity
+		class="com.db.itrac.rules.TradeVariableInstanceInfo"
+		cacheable="true">
+		<discriminator-value>TR</discriminator-value>	
+	</entity>
+			
+</entity-mappings>

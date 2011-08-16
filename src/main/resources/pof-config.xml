@@ -1,0 +1,12 @@
+<pof-config>
+    <user-type-list>
+        <include>coherence-common-pof-config.xml</include>
+        <include>coherence-messagingpattern-pof-config.xml</include>
+        <include>coherence-pushreplicationpattern-pof-config.xml</include>
+        <include>itrac-pof-config.xml</include>        
+    </user-type-list>
+    <allow-interfaces>true</allow-interfaces>
+    <allow-subclasses>true</allow-subclasses>
+</pof-config>
+
+

@@ -1,0 +1,35 @@
+<coherence>
+	
+	<configurable-cache-factory-config>
+		<class-name>com.oracle.coherence.environment.extensible.ExtensibleEnvironment</class-name>
+		<init-params>
+			<init-param>
+				<param-type>string</param-type>
+				<param-value system-property="tangosol.coherence.cacheconfig">support-cache-config.xml</param-value>
+			</init-param>			
+		</init-params>
+	</configurable-cache-factory-config>
+
+	<cluster-config>
+		<member-identity>
+			<cluster-name system-property="tangosol.coherence.cluster">SUPPORT_itracServer_LOCAL</cluster-name>
+		</member-identity>
+		
+		<multicast-listener>
+			<time-to-live>0</time-to-live>
+		</multicast-listener>
+
+		<serializers>
+			<serializer id="pof">
+				<class-name>com.tangosol.io.pof.ConfigurablePofContext</class-name>
+				<init-params>
+					<init-param>
+						<param-type>String</param-type>
+						<param-value>pof-config.xml</param-value>
+					</init-param>
+				</init-params>
+			</serializer>
+		</serializers>
+
+	</cluster-config>
+</coherence>

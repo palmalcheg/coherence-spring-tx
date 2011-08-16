@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:orm="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence       http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd    http://java.sun.com/xml/ns/persistence/orm     http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
+	<persistence-unit name="test.org.drools.persistence.jpa"	transaction-type="JTA">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>				
+		<class>org.drools.persistence.session.SessionInfo</class>
+		<class>org.drools.persistence.processinstance.ProcessInstanceInfo</class>
+		<class>org.drools.persistence.processinstance.ProcessInstanceEventInfo</class>
+		<class>org.drools.persistence.processinstance.WorkItemInfo</class>
+		<class>org.drools.persistence.processinstance.variabletypes.VariableInstanceInfo</class>
+		<class>org.drools.persistence.processinstance.variabletypes.JPAPersistedVariable</class>
+		<class>org.drools.persistence.processinstance.variabletypes.SerializablePersistedVariable</class>
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		<properties>
+		    <property name="eclipselink.cache.type.SessionInfo" value="Full"/>
+		    <property name="eclipselink.cache.type.VariableInstanceInfo" value="Full"/>
+		    <property name="eclipselink.cache.type.WorkItemInfo" value="Full"/>
+		    <property name="eclipselink.cache.type.ProcessInstanceInfo" value="Full"/>
+		    <property name="eclipselink.cache.type.ProcessInstanceEventInfo" value="Full"/>
+			<property name="eclipselink.weaving" value="false" />			
+		</properties>
+	</persistence-unit>
+</persistence>
