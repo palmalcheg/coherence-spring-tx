@@ -59,5 +59,13 @@ public class CoherenceTransactionTest extends AbstractJUnit4SpringContextTests {
 		Assert.assertNotNull(cache);
 		Assert.assertNull(cache.remove(sample_key));
 	}
+	
+	@Test	
+	public void txIsolationTest() {
+		Connection conn = ConnectionFactoryUtils.doGetConnection(cf);
+		OptimisticNamedCache cache = conn.getNamedCache(TX_SAMPLE_CACHE);
+		Assert.assertNotNull(cache);
+		Assert.assertNull(cache.remove(sample_key));
+	}
 
 }
