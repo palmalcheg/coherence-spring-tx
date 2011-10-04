@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<coherence xmlns="http://xmlns.oracle.com/coherence/coherence-operational-config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-operational-config http://xmlns.oracle.com/coherence/coherence-operational-config/1.0/coherence-operational-config.xsd">
-    <!--coherence-version:3.7-->
-</coherence>
