@@ -16,6 +16,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import com.tangosol.coherence.transaction.Connection;
 import com.tangosol.coherence.transaction.ConnectionFactory;
+import com.tangosol.coherence.transaction.DefaultConnectionFactory;
 import com.tangosol.coherence.transaction.Isolation;
 import com.tangosol.coherence.transaction.TransactionState;
 
@@ -47,8 +48,7 @@ public class CoherenceLocalTransactionManager extends AbstractPlatformTransactio
 		setConnectionFactory(cf);				
 		afterPropertiesSet();
 	}
-
-
+	
 	/**
 	 * Set the Coherence ConnectionFactory that this instance should manage local
 	 * transactions for.

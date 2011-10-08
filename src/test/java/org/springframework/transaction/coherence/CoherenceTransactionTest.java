@@ -20,7 +20,7 @@ import com.tangosol.coherence.transaction.ConnectionFactory;
 import com.tangosol.coherence.transaction.OptimisticNamedCache;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-cache-context.xml")
+@ContextConfiguration("classpath:test-spring-cache-context.xml")
 @TransactionConfiguration(transactionManager="cacheTxManager")
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional

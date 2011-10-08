@@ -3,9 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ru.palmal</groupId>
 	<artifactId>coherence-spring-drools</artifactId>
-	<version>3.0.0</version>
+	<version>0.0.1</version>
 	<packaging>bundle</packaging>
 
+	<dependencyManagement>
+		<dependencies>
+		</dependencies>
+	</dependencyManagement>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<eclipselink.version>2.1.2</eclipselink.version>
@@ -160,6 +164,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+		
 	</dependencies>
 
 	<repositories>

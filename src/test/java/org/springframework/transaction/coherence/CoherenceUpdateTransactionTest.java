@@ -16,7 +16,7 @@ import com.tangosol.coherence.transaction.OptimisticNamedCache;
 import com.tangosol.util.filter.EqualsFilter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-cache-context.xml")
+@ContextConfiguration("classpath:test-spring-cache-context.xml")
 public class CoherenceUpdateTransactionTest extends AbstractJUnit4SpringContextTests {
 	
 	private static final String TX_SAMPLE_CACHE = "tx-sample";

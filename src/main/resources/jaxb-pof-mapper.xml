@@ -1,0 +1,30 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<pof-mapping>
+	<pof-classes>
+		<pof-class className="SessionInfo">
+			<pof id="0" property="id" type="int" />
+			<pof id="1" property="version" type="int" />
+			<pof id="2" property="startDate" type="date" />
+			<pof id="3" property="lastModificationDate" type="date" />
+			<pof id="4" property="data" type="blob" />
+		</pof-class>
+		<pof-class className="ProcessInstanceInfo">
+			<pof id="0" property="id" type="long" />
+			<pof id="1" property="version" type="int" />
+			<pof id="2" property="startDate" type="date" />
+			<pof id="3" property="lastModificationDate" type="date" />
+			<pof id="4" property="data" type="blob" />
+			<pof id="5" property="eventTypes" type="set" />
+			<pof id="6" property="processId" type="string" />
+			<pof id="7" property="state" type="int" />
+		</pof-class>
+		<pof-class className="WorkItemInfo">
+			<pof id="0" property="id" type="long" />
+			<pof id="1" property="version" type="int" />
+			<pof id="2" property="creationDate" type="date" />
+			<pof id="3" property="name" type="string" />
+			<pof id="4" property="processInstanceId" type="long" />
+			<pof id="5" property="state" type="long" />
+		</pof-class>
+	</pof-classes>
+</pof-mapping>

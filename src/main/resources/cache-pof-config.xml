@@ -1,0 +1,35 @@
+<pof-config>
+	<user-type-list>
+		
+		<include>coherence-common-pof-config.xml</include>
+		<include>txn-pof-config.xml</include>
+		<!--include>coherence-processingpattern-pof-config.xml</include-->
+		
+		<user-type>
+			<type-id>4000</type-id>
+			<class-name>org.drools.domain.SessionInfo</class-name>
+			<serializer>
+				<class-name>org.drools.pof.GenericPofSerializer</class-name>
+			</serializer>
+		</user-type>
+		
+		<user-type>
+			<type-id>4001</type-id>
+			<class-name>org.drools.domain.ProcessInstanceInfo</class-name>
+			<serializer>
+				<class-name>org.drools.pof.GenericPofSerializer</class-name>
+			</serializer>
+		</user-type>
+		
+		<user-type>
+			<type-id>4002</type-id>
+			<class-name>org.drools.domain.WorkItemInfo</class-name>
+			<serializer>
+				<class-name>org.drools.pof.GenericPofSerializer</class-name>
+			</serializer>
+		</user-type>
+		
+	</user-type-list>
+	<allow-interfaces>true</allow-interfaces>
+	<allow-subclasses>true</allow-subclasses>
+</pof-config>

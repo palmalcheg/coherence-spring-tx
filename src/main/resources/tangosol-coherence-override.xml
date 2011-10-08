@@ -1,23 +1,64 @@
+<?xml version='1.0'?>
 <coherence>
-	
-	<configurable-cache-factory-config>
-		<class-name>com.oracle.coherence.environment.extensible.ExtensibleEnvironment</class-name>
-		<init-params>
-			<init-param>
-				<param-type>string</param-type>
-				<param-value system-property="tangosol.coherence.cacheconfig">cache-config.xml</param-value>
-			</init-param>			
-		</init-params>
-	</configurable-cache-factory-config>
+    <cluster-config>
 
-	<cluster-config>
-		<member-identity>
-			<cluster-name system-property="tangosol.coherence.cluster">Cache_Server_LOCAL</cluster-name>
-		</member-identity>
-		
-		<multicast-listener>
-			<time-to-live>0</time-to-live>
-		</multicast-listener>
+    	<member-identity>
+          <!--
+          Note: All members of the cluster must specify the same cluster name in
+          order to be allowed to join the cluster.
+          -->
+          <cluster-name system-property="tangosol.coherence.cluster">my_little_tiny_cluster</cluster-name>
+          <site-name    system-property="tangosol.coherence.site">KIEV</site-name>
+          <rack-name    system-property="tangosol.coherence.rack">my_little_tiny_cluster_RACK1</rack-name>
+          <machine-name system-property="tangosol.coherence.machine">bugaga</machine-name>
+          <process-name system-property="tangosol.coherence.process">my_little_tiny_cluster_LOCAL</process-name>
+          <member-name  system-property="tangosol.coherence.member">my_little_tiny_cluster_ITRAC</member-name>
+          <role-name    system-property="tangosol.coherence.role"></role-name>
+          <priority     system-property="tangosol.coherence.priority"></priority>
+        </member-identity>
 
-	</cluster-config>
+        <unicast-listener>
+            <!--
+            Note: Specifying one or more "well known" addresses (WKA) will disable
+            all multicast communication. In this case, for a member to join the cluster
+            it will either have to be a WKA or there will have to be at least one WKA
+            member running.
+            -->
+            <well-known-addresses>
+                <socket-address id="1">
+                    <address system-property="tangosol.coherence.wka">localhost</address>
+                    <port system-property="tangosol.coherence.wka.port">29876</port>
+                </socket-address>
+            </well-known-addresses>
+
+            <!--
+            Note: The "localhost" setting may not work on systems that define
+            localhost as the loopback address; in that case, specify the machine
+            name or the specific IP address.
+            -->
+            <address system-property="tangosol.coherence.localhost">localhost</address>
+
+            <port system-property="tangosol.coherence.localport">29876</port>
+            <port-auto-adjust system-property="tangosol.coherence.localport.adjust">true</port-auto-adjust>
+            <packet-buffer>
+                <maximum-packets>1428</maximum-packets>
+            </packet-buffer>
+            <priority>8</priority>
+        </unicast-listener>
+
+        <multicast-listener>
+            <time-to-live>0</time-to-live>
+        </multicast-listener>
+
+
+    </cluster-config>   
+    
+    <license-config>
+        <edition-name>GE</edition-name>
+    </license-config>
+    <logging-config>
+        <severity-level>9</severity-level>
+    </logging-config>
+    
+    
 </coherence>

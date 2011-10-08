@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<cache-config 
+    xmlns:processing="class:com.oracle.coherence.patterns.processing.configuration.ProcessingPatternNamespaceHandler"
+    xmlns:element="class://com.oracle.coherence.environment.extensible.namespaces.XmlElementProcessingNamespaceContentHandler"
+    element:introduce-cache-config="cache-config.xml">
+        
+    <processing:cluster-config pof="true">
+        <processing:dispatchers>
+            <processing:logging-dispatcher displayname="Logging Dispatcher" />
+            <processing:task-dispatcher displayname="Task Dispatcher">
+                <processing:composite-policy>
+                    <processing:attribute-match-policy />
+                    <processing:round-robin-policy />
+                </processing:composite-policy>
+            </processing:task-dispatcher>
+            <processing:local-executor-dispatcher displayname="Local Dispatcher" />
+        </processing:dispatchers>
+        <processing:taskprocessors>
+            <processing:taskprocessordefinition id="GridTaskProcessor" displayname="Grid Task Processor"
+                type="GRID">
+                <processing:default-taskprocessor id="GridTaskProcessor" threadpoolsize="6" />
+                <processing:attribute name="type">grid</processing:attribute>
+            </processing:taskprocessordefinition>
+        </processing:taskprocessors>
+    </processing:cluster-config>
+    
+</cache-config>

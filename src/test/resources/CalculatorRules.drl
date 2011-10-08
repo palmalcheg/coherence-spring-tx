@@ -1,0 +1,86 @@
+/**
+ * Copyright 2010 JBoss Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package test.calculator.rules
+
+import org.drools.runtime.process.ProcessContext
+import test.calculator.CalcEvent
+import test.calculator.CalcOperation
+
+declare CaclEvent
+  @role(event)
+end
+
+rule "Addition" ruleflow-group "MakeCalculation"
+  when
+    $ev : CalcEvent ( op == CalcOperation.Add )
+    $currentValue: Number()
+  then
+    retract($currentValue);
+    retract($ev);
+    insert($currentValue.floatValue() + $ev.value.floatValue());
+end
+
+rule "Substract" ruleflow-group "MakeCalculation"
+  when
+   $ev : CalcEvent ( op == CalcOperation.Sub )
+   $currentValue: Number()
+  then
+    retract($currentValue);
+    retract($ev);
+    insert($currentValue.floatValue() - $ev.value.floatValue());
+end
+
+rule "Division" ruleflow-group "MakeCalculation"
+  when
+    $ev : CalcEvent ( op == CalcOperation.Div )
+    $currentValue: Number()
+  then
+    retract($currentValue);
+    retract($ev);
+    insert($currentValue.floatValue() / $ev.value.floatValue());
+end
+
+rule "Multiply" ruleflow-group "MakeCalculation"
+  when
+     $ev : CalcEvent ( op == CalcOperation.Mult )
+     $currentValue: Number()
+  then
+    retract($currentValue);
+    retract($ev);
+    insert($currentValue.floatValue() * $ev.value.floatValue());
+end
+
+rule "Result" ruleflow-group "MakeCalculation"
+  when
+    $ev : CalcEvent ( op == CalcOperation.Result )
+    $currentValue: Number()
+  then
+    System.out.println(">>>> Result : "+$currentValue);
+    drools.getContext(ProcessContext.class).getProcessInstance().signalEvent("Done", null);
+end
+
+rule "Start" ruleflow-group "MakeCalculation"
+  when
+    $ev : CalcEvent ( op == CalcOperation.Start )
+  then
+    insert($ev.value);
+    retract($ev);
+end
+
+query "GetValue"
+    currentValue : Number()
+end
