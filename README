@@ -2,3 +2,15 @@ Coherence Transaction API for Spring Container
 
 Coherence - 3.7.1
 Coherence-Common - 2.1.0.27679
+Drools - 5.2.0.Final
+
+Some Credits goes to Drools developers : drools-persistence-jpa was taken as a reference implementation, one can see similiarities in most classes, though initial JPA implementation is tighten to Hibernate =( Current implementation can be used both with EclipseLink and Hibernate =P
+
+Coherence Spring TM is a twin of JCA CCI implementation - nothing special =))
+
+
+
+ 
+
+ 
+
