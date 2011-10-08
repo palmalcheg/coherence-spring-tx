@@ -8,6 +8,9 @@ Some Credits goes to Drools developers : drools-persistence-jpa was taken as a r
 
 Coherence Spring TM is a twin of JCA CCI implementation - nothing special =))
 
+To see basic functionality in action find 'DroolsCalculatorTest' and run it.
+Enjoy =)
+
 
 
  
