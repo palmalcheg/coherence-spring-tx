@@ -11,20 +11,24 @@ import org.drools.runtime.Environment;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.coherence.ConnectionFactoryUtils;
 
 import com.tangosol.coherence.transaction.Connection;
+import com.tangosol.coherence.transaction.ConnectionFactory;
 import com.tangosol.coherence.transaction.OptimisticNamedCache;
 
 @Component
+@Scope("prototype")
 public class CalculatorImpl implements Calculator {
 	
 	@Resource
 	private Environment environment;
 	
 	@Resource
-	private Connection conn;
+	private ConnectionFactory cf;
 
 	@Transactional
 	public Number executeOperation(String businessKey, KnowledgeBase kbase,
@@ -34,6 +38,7 @@ public class CalculatorImpl implements Calculator {
 		event.op = op;
 		event.value = value;
 		
+		Connection conn  = ConnectionFactoryUtils.doGetConnection(cf);
 		OptimisticNamedCache lookup = conn.getNamedCache("tx-lookup");
 		Integer id = (Integer) lookup.get(businessKey);
 		StatefulKnowledgeSession session = null;
