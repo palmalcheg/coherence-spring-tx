@@ -7,28 +7,64 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
+    <!-- Coherence -->
     <bean id="coherenceCF" class="com.tangosol.coherence.transaction.DefaultConnectionFactory">
         <constructor-arg value="cache-config.xml"/>
     </bean>
     
-    <bean id="environment" class="org.drools.alternative.persistence.utils.EnvironmentUtils" factory-method="createEnvironment">
+    <bean id="cacheTxManager" class="org.springframework.transaction.coherence.CoherenceLocalTransactionManager">
+	    <constructor-arg ref="coherenceCF"/>
+	</bean>
+    
+    <bean id="cohEnv" class="org.drools.alternative.persistence.utils.EnvironmentUtils" factory-method="createEnvironment">
 	  <constructor-arg ref="cacheTxManager"/>
 	  <constructor-arg ref="coherenceCF" />
     </bean>  
     
-	
-	<bean id="cacheTxManager" class="org.springframework.transaction.coherence.CoherenceLocalTransactionManager">
-	    <constructor-arg ref="coherenceCF"/>
+    <!-- JPA (EclipseLink) -->
+    
+    <bean id="emf" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="drools.database"/>
 	</bean>
 	
-	<bean class="org.springframework.transaction.coherence.ConnectionFactoryUtils" factory-method="doGetConnection" scope="prototype">
-	    <constructor-arg ref="coherenceCF" />
+	<bean id="jpaTxManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+	  <constructor-arg ref="emf"/>
+	</bean>
+    
+    <bean id="jpaEnv" class="org.drools.alternative.persistence.utils.EnvironmentUtils" factory-method="createEnvironment">
+	  <constructor-arg ref="jpaTxManager"/>
+	  <constructor-arg ref="emf" />
+    </bean>  
+    
+    <!-- Common Calculator Wiring -->
+	
+	<bean id="abstractCalculator"	class="test.calculator.AbstractCalculator" abstract="true">
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
 	</bean>
 	
-	<tx:annotation-driven transaction-manager="cacheTxManager"/>
+	<bean id="gridCalc" parent="abstractCalculator">
+	  <property name="transactionManager" ref="cacheTxManager"/>
+	  <lookup-method name="getSupport" bean="cohSupport"/>
+	</bean>
 	
+	<bean id="dbCalc" parent="abstractCalculator">
+	  <property name="transactionManager" ref="jpaTxManager"/>
+	  <lookup-method name="getSupport" bean="jpaSupport"/>
+	</bean>
+	
+	 <bean id="cohSupport" class="test.calculator.CoherenceCalculator">
+		 <lookup-method name="getEnvironment" bean="cohEnv"/>
+	 </bean>
+	 
+	 <bean id="jpaSupport" class="test.calculator.JPACalculator">
+		  <lookup-method name="getEnvironment" bean="jpaEnv"/>
+	 </bean>
+		
 	<context:annotation-config />
 	
-	<context:component-scan base-package="test"/>
-
 </beans>

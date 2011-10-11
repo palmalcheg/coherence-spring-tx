@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+	<persistence-unit name="drools.database" transaction-type="RESOURCE_LOCAL">
+	    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>org.drools.domain.SessionInfo</class>
+		<class>org.drools.domain.ProcessInstanceInfo</class>
+		<class>org.drools.domain.WorkItemInfo</class>
+		<class>org.drools.domain.VariableInfo</class>
+		<class>test.calculator.LookupSession</class>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+			<property name="javax.persistence.jdbc.url"    value="jdbc:h2:mem:drools;MODE=Oracle;create=true;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SEQUENCE IF NOT EXISTS DROOLS_SEQ" />
+			<property name="javax.persistence.jdbc.user" value="sa" />
+			<property name="javax.persistence.jdbc.password" value="" />
+
+			<!-- EclipseLink should create the database schema automatically -->
+			<property name="eclipselink.ddl-generation" value="create-tables" />
+			<property name="eclipselink.ddl-generation.output-mode"	value="database" />
+		</properties>
+	</persistence-unit>
+</persistence>

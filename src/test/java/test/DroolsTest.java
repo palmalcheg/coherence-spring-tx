@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 public class DroolsTest extends AbstractJUnit4SpringContextTests {
        
-    @Resource(name="environment")
+    @Resource(name="cohEnv")
     private Environment environment;
 
     @Test
@@ -53,18 +53,14 @@ public class DroolsTest extends AbstractJUnit4SpringContextTests {
         assertTrue(processInstance.getState() == ProcessInstance.STATE_ACTIVE);        
         ksession.fireAllRules();
         
-        StatefulKnowledgeSession loadKnowledgeSession = loadKnowledgeSession(ksession.getId(),kbase);
         System.out.println("Signaling Hello2");
-        loadKnowledgeSession.signalEvent("Hello2", null, processInstance.getId());
+        ksession.signalEvent("Hello2", null, processInstance.getId());
     }
         
     
     private StatefulKnowledgeSession createKnowledgeSession(KnowledgeBase kbase) {
         return  new CommandBasedStatefulKnowledgeSession(new SingleSessionCommandServiceImpl(kbase, null,environment));
     }
-    
-    private StatefulKnowledgeSession loadKnowledgeSession(int id, KnowledgeBase kbase) {
-        return  new CommandBasedStatefulKnowledgeSession(new SingleSessionCommandServiceImpl(id,kbase, null,environment));
-    }
-
+   
+   
 }

@@ -51,7 +51,7 @@ public class DroolsCalculatorTest implements ApplicationContextAware {
 	}
 	
 	@Resource
-	private Calculator calculator;
+	private Calculator[] calculators;
 	
 	private Number value;
 	private CalcOperation op;
@@ -71,11 +71,12 @@ public class DroolsCalculatorTest implements ApplicationContextAware {
 		Assert.assertNotNull(kbase);
 		Assert.assertNotNull(op);
 		Assert.assertNotNull(value);
-		Number result = calculator.executeOperation(businessKey,kbase,op,value);
-		if (op == CalcOperation.Result){
-			Assert.assertEquals(value, result);
+		for (Calculator calculator : calculators) {
+			Number result = calculator.executeOperation(businessKey,kbase,op,value);
+			if (op == CalcOperation.Result){
+				Assert.assertEquals(value, result);
+			}
 		}
-		
 	}
 
 	@Override
