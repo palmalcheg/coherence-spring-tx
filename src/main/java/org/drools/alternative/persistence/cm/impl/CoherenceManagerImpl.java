@@ -6,8 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.drools.alternative.persistence.PersistenceManager;
 import org.drools.alternative.persistence.PersistenceDrools;
+import org.drools.alternative.persistence.PersistenceManager;
+import org.drools.domain.Versioning;
 import org.drools.runtime.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import com.tangosol.coherence.transaction.ConnectionFactory;
 import com.tangosol.coherence.transaction.OptimisticNamedCache;
 import com.tangosol.coherence.transaction.TransactionState;
 import com.tangosol.util.filter.ContainsAllFilter;
+import com.tangosol.util.filter.EqualsFilter;
 
 public class CoherenceManagerImpl implements PersistenceManager {
 
@@ -54,7 +56,7 @@ public class CoherenceManagerImpl implements PersistenceManager {
     }
 
     @Override
-    public <T, ID> T getById(ID id) {
+    public <T extends Versioning, ID> T getById(ID id) {
         if (log.isDebugEnabled())
             log.debug("Quering {} [id={}] from cache", nameOfCache, id);
         return (T) getCache().get(id);
@@ -68,10 +70,12 @@ public class CoherenceManagerImpl implements PersistenceManager {
     }
 
     @Override
-    public <T, ID> T saveOrUpdate(T object, ID id) {
+    public <T extends Versioning, ID> T saveOrUpdate(T object, ID id) {
         OptimisticNamedCache cache = getCache();
         if (cache.containsKey(id)) {
-            cache.update(id, object, null);
+        	int version = object.getVersion();
+            object.setVersion(version + 1);
+            cache.update(id, object, new EqualsFilter("getVersion", version));
             if (log.isDebugEnabled())
                 log.debug("{} [id={}] updated in cache", nameOfCache, id);
         } else {

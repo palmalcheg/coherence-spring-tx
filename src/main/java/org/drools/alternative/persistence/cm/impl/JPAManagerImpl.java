@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import org.drools.alternative.persistence.PersistenceManager;
+import org.drools.domain.Versioning;
 import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
@@ -30,7 +31,7 @@ public class JPAManagerImpl implements PersistenceManager {
     }
 
     @Override
-    public <T, ID> T getById(ID id) {
+    public <T extends Versioning, ID> T getById(ID id) {
         return (T) getEM().find(entityClass, id);
     }
 
@@ -41,7 +42,7 @@ public class JPAManagerImpl implements PersistenceManager {
     }
 
     @Override
-    public <T, ID> T saveOrUpdate(T object, ID id) {
+    public <T extends Versioning, ID> T saveOrUpdate(T object, ID id) {
         Object obj = getById(id);
         if(obj == null) {
             getEM().persist(object);

@@ -11,7 +11,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @Entity
-public class SessionInfo {
+public class SessionInfo implements Versioning{
     
     @Id
     private 

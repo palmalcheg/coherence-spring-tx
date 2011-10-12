@@ -35,7 +35,7 @@ import javax.persistence.Version;
 @Entity
 @NamedQuery(name = "ProcessInstancesWaitingForEvent", 
             query = "select processInstanceInfo.id from ProcessInstanceInfo processInstanceInfo where :type member of processInstanceInfo.eventTypes")
-public class ProcessInstanceInfo {
+public class ProcessInstanceInfo implements Versioning{
 
     @Id
     private Long id;

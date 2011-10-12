@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorkItemInfo {
+public class WorkItemInfo implements Versioning{
 
     private long workItemId;
 
